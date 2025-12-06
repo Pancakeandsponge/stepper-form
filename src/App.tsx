@@ -3,7 +3,8 @@ import { userSchema, type TuserSchema } from "./schemas/users";
 import { Controller, Form, useForm, type SubmitHandler   } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button"
-
+import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge"
 import {
   Field, 
   FieldError, 
@@ -21,6 +22,7 @@ import {
 
 
 import { Input } from "./components/ui/input";
+import { Label } from "./components/ui/label";
 
 function App() {
   
@@ -50,7 +52,11 @@ if (step === 2) valid = await form.trigger(["address", "age"], { shouldFocus: tr
   const [step, setStep] = useState<number>(1);
   const FirstStepField = () => {
   return (
-       <><Controller 
+       <>
+       <Badge variant={"outline"}> Step 1</Badge>
+       <Progress value={20}  />
+       
+       <Controller 
       name="name"
       control={form.control}
       render={({ field, fieldState }) => (
@@ -86,6 +92,8 @@ if (step === 2) valid = await form.trigger(["address", "age"], { shouldFocus: tr
   }
   const SecondStepField = () => {
     return(<>
+            <Badge variant={"outline"}>Step 2</Badge>
+        <Progress value={99} />
        <Controller
           name="address"
           control={form.control}
@@ -131,7 +139,7 @@ if (step === 2) valid = await form.trigger(["address", "age"], { shouldFocus: tr
     <div className="h-screen flex justify-center items-center">
       <Card className="w-full max-w-sm ">
   <CardHeader>
-    <CardTitle>Form</CardTitle>
+    <CardTitle>sign up form</CardTitle>
   </CardHeader>
       
   <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -150,6 +158,7 @@ if (step === 2) valid = await form.trigger(["address", "age"], { shouldFocus: tr
         </div>
       </>
      }
+   
   
 
       </FieldGroup>
