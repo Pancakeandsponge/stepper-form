@@ -21,7 +21,9 @@ import {
 
 
 import { Input } from "./components/ui/input";
+
 function App() {
+  
   const form = useForm<TuserSchema>({
     mode:"onChange",
     defaultValues: {
@@ -35,11 +37,18 @@ function App() {
 
   const onSubmit :SubmitHandler<TuserSchema>=(data)=>{
     console.log(data);
-    
   }
- 
+  const next = async () => {
+    let valid = false;
 
-  const [step, setStep] = useState<number>(0);
+    if (step === 1) valid = await form.trigger(["name",'email']);
+    if (step === 2) valid = await form.trigger(["address","age"]);
+
+    if (valid) setStep((prev) => prev + 1);
+  };
+  const prev = () => setStep((prev) => prev - 1);
+ 
+  const [step, setStep] = useState<number>(1);
   const FirstStepField = () => {
   return (
        <><Controller 
@@ -56,7 +65,11 @@ function App() {
             autoComplete="off" />
           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
         </Field>
-      )} /><Controller
+      )} />
+        
+   
+        
+      <Controller
         name="email"
         control={form.control}
         render={({ field, fieldState }) => (
@@ -122,18 +135,19 @@ function App() {
   <form onSubmit={form.handleSubmit(onSubmit)}>
     <CardContent >
       <FieldGroup>
-     {step === 0 && <>
+     {step == 1 && <>
      <FirstStepField/>
-     <Button type="button" onClick={()=>{setStep((prev)=>prev+1)}}>next step</Button>
+     <Button type="button" onClick={next}>next step</Button>
      </> }
-
+     {
+     }
+  
 
       </FieldGroup>
     </CardContent>
 
     <CardFooter className="mt-3">
       <Field orientation="horizontal">
-           
       </Field>
     </CardFooter>
   </form>
