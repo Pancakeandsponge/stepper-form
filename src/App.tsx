@@ -1,26 +1,19 @@
 import { useState } from "react";
 import { userSchema, type TuserSchema } from "./schemas/users";
-import { Form, useForm } from "react-hook-form";
+import { Controller, Form, useForm, type SubmitHandler   } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button"
 
 import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldError,
+  Field, 
+  FieldError, 
   FieldGroup,
   FieldLabel,
-  FieldLegend,
-  FieldSeparator,
   FieldSet,
-  FieldTitle,
 } from "@/components/ui/field"
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -30,6 +23,7 @@ import {
 import { Input } from "./components/ui/input";
 function App() {
   const form = useForm<TuserSchema>({
+    mode:"onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -39,46 +33,116 @@ function App() {
     resolver: zodResolver(userSchema),
   });
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit :SubmitHandler<TuserSchema>=(data)=>{
     console.log(data);
-  });
+    
+  }
+ 
 
   const [step, setStep] = useState<number>(0);
+  const FirstStepField = () => {
+  return (
+       <><Controller 
+      name="name"
+      control={form.control}
+      render={({ field, fieldState }) => (
+        <Field data-invalid={fieldState.invalid} >
+          <FieldLabel htmlFor="name">Name</FieldLabel>
+          <Input
+            {...field}
+            id="name"
+            aria-invalid={fieldState.invalid}
+            placeholder="please enter your name"
+            autoComplete="off" />
+          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+        </Field>
+      )} /><Controller
+        name="email"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="email">Email</FieldLabel>
+            <Input
+              {...field}
+              id="email"
+              aria-invalid={fieldState.invalid}
+              placeholder="please enter your email"
+              autoComplete="off" />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )} /></>)
+  }
+  const SecondStepField = () => {
+    return(<>
+       <Controller
+          name="address"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="address">address</FieldLabel>
+              <Input
+                {...field}
+                id="address"
+                aria-invalid={fieldState.invalid}
+                placeholder="please enter your address"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+           
+            </Field>
+          )}
+        />
 
+        <Controller
+          name="age"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="age">age</FieldLabel>
+              <Input
+                {...field}
+                id="age"
+                aria-invalid={fieldState.invalid}
+                placeholder="please enter your age"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        /></>)
+  }
   return (
 
     <div className="h-screen flex justify-center items-center">
-      
-            <Card  className="w-full max-w-sm">
+      <Card className="w-full max-w-sm ">
   <CardHeader>
     <CardTitle>Form</CardTitle>
   </CardHeader>
-  <CardContent>
-    <FieldSet>
-
-  <FieldGroup>
-    <Field>
-      <FieldLabel htmlFor="name">Full name</FieldLabel>
-      <Input placeholder="please enter your name" id="name" />
       
-    </Field>
-    <Field>
-      <FieldLabel htmlFor="email">Emial</FieldLabel>
-      <Input id="email" placeholder="please enter your email" aria-invalid />
-     
-    </Field>
-    <Field orientation="">
-      <FieldLabel htmlFor="newsletter">Subscribe to the newsletter</FieldLabel>
-    </Field>
-  </FieldGroup>
-</FieldSet>
-  </CardContent>
-  <CardFooter>
-  </CardFooter>
+  <form onSubmit={form.handleSubmit(onSubmit)}>
+    <CardContent >
+      <FieldGroup>
+     {step === 0 && <>
+     <FirstStepField/>
+     <Button type="button" onClick={()=>{setStep((prev)=>prev+1)}}>next step</Button>
+     </> }
+
+
+      </FieldGroup>
+    </CardContent>
+
+    <CardFooter className="mt-3">
+      <Field orientation="horizontal">
+           
+      </Field>
+    </CardFooter>
+  </form>
 </Card>
+
     
     </div>
   );
 }
 
 export default App;
+
