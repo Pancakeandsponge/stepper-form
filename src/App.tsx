@@ -29,8 +29,8 @@ function App() {
     defaultValues: {
       name: "",
       email: "",
-      address:'',
-      age:0
+      address:"",
+      age:0 
     },
     resolver: zodResolver(userSchema),
   });
@@ -42,8 +42,7 @@ function App() {
     let valid = false;
 
     if (step === 1) valid = await form.trigger(["name",'email']);
-    if (step === 2) valid = await form.trigger(["address","age"]);
-
+if (step === 2) valid = await form.trigger(["address", "age"], { shouldFocus: true });
     if (valid) setStep((prev) => prev + 1);
   };
   const prev = () => setStep((prev) => prev - 1);
@@ -94,8 +93,10 @@ function App() {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="address">address</FieldLabel>
               <Input
+                
                 {...field}
                 id="address"
+                
                 aria-invalid={fieldState.invalid}
                 placeholder="please enter your address"
                 autoComplete="off"
@@ -115,6 +116,7 @@ function App() {
               <Input
                 {...field}
                 id="age"
+                onChange={(e) => field.onChange(+e.target.value)}
                 aria-invalid={fieldState.invalid}
                 placeholder="please enter your age"
                 autoComplete="off"
@@ -140,6 +142,13 @@ function App() {
      <Button type="button" onClick={next}>next step</Button>
      </> }
      {
+      step == 2 && <>
+        <SecondStepField/>
+        <div className="flex justify-center gap-2 ">
+          <Button type="button" onClick={prev}>prev step</Button>
+          <Button type= "submit" >Submit</Button>
+        </div>
+      </>
      }
   
 
