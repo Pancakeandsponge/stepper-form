@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { userSchema, type TuserSchema } from "./schemas/users";
-import { Controller, Form, useForm, type SubmitHandler   } from "react-hook-form";
+import { Controller, useForm, type SubmitHandler   } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -10,7 +10,7 @@ import {
   FieldError, 
   FieldGroup,
   FieldLabel,
-  FieldSet,
+  
 } from "@/components/ui/field"
 import {
   Card,
@@ -22,7 +22,6 @@ import {
 
 
 import { Input } from "./components/ui/input";
-import { Label } from "./components/ui/label";
 
 function App() {
   
